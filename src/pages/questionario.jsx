@@ -7,19 +7,43 @@ import AversaoRisco from './aversao_risco';
 import AversaoPerda from './aversao_perda';
 import Reflexao from './reflexao';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useRef } from 'react';
+import SLR from './slr';
+import StatusPage from './status';
 export default function Questionario(){
-    useEffect(() => {
-        // 👇️ scroll to top on page load
-        window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-      }, []);
+    
+
     const [values, setValues] = useState({
         step: 1,
-        aversaoRisco: 0,
-        aversaoPerda: 0,
-        reflexao: 0,
-        slr: 0,
+        aversaoRisco: -1,
+        aversaoPerda: -1,
+        reflexao: -1,
+        total_assets: -1,
+        liabilities: -1,
     });
+    const isFirstRender = useRef(true)
+
+
+    useEffect(() => {
+        if (isFirstRender.current) {
+            isFirstRender.current = false // toggle flag after first render/mounting
+            return;
+          }
+        
+        if(values.aversaoRisco != -1 && values.step == 1){
+            setValues({...values, step: 2});
+        }
+        else if(values.aversaoPerda != -1 && values.step == 2){
+            setValues({...values, step: 3});
+        }
+        else if(values.reflexao != -1 && values.step == 3){
+            setValues({...values, step: 4});
+        }
+        else if(values.total_assets != -1 && values.step == 4 && values.liabilities != -1){
+            setValues({...values, step: 5});
+        }
+
+     }, [values]);
 
     // increment the step
     const nextStep = () => {
@@ -34,6 +58,7 @@ export default function Questionario(){
     // handle avesaoRisco change
     const handleAversaoRiscoChange = (input) => {
         setValues({...values, aversaoRisco: input});
+        // nextStep();
     };
 
     // handle avesaoPerda change
@@ -46,10 +71,21 @@ export default function Questionario(){
         setValues({...values, reflexao: input});
     };
 
-    // handle slr change
-    const handleSlrChange = (input) => {
-        setValues({...values, slr: input});
+    // handle slr change (receive and change total_assets and liabilities)
+    const handleSLRChange = (input) => {
+        console.log(input);
+        setValues({...values, total_assets: input[0], liabilities: input[1]});
     };
+    // handle total_assets change
+    const handleTotalAssetsChange = (input) => {
+        setValues({...values, total_assets: input});
+    };
+
+    // handle liabilities change
+    const handleLiabilitiesChange = (input) => {
+        setValues({...values, liabilities: input});
+    };
+    
 
 
     // change the value of a field
@@ -69,9 +105,9 @@ export default function Questionario(){
             case 3:
                 return <Reflexao handleChange={handleReflexaoChange} values={values} nextStep={nextStep}/>;
             case 4:
-                return <div></div>;
-            default:
-                return <AversaoRisco/>;
+                return <SLR handleChange={handleSLRChange} values={values} nextStep={nextStep}/>;
+            case 5:
+                return <StatusPage values= {values}/>;
 
     }
 }
@@ -80,6 +116,7 @@ export default function Questionario(){
     // render a flex with a switch that in case values == 0, render AveraoRisco
     return (
         <Flex direction="column" align="center" justify="start" padding={10}>
+            <Image src={logo} alt="logo" />
             {renderSwitch()}
         </Flex>
     );
