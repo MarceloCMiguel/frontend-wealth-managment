@@ -23,9 +23,9 @@ jobs:
             lsof -ti tcp:3000 | xargs kill
             eval $(ssh-agent -s)
             ssh-add ~/.ssh/my_project_deploy_key
-            cd /home/ubuntu && 
-            cd frontend-wealth-managment/ &&
-            git pull &&
+            cd /home/ubuntu
+            cd frontend-wealth-managment/
+            git pull
             nohup npm start &
             exit
 
