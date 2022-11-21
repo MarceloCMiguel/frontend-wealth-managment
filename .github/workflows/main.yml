@@ -1,4 +1,4 @@
-name: Deploy FastApi app on EC2 
+name: Deploy React app on EC2 
 
 env:
   IP_SSH: ${{ secrets.IP_SSH }}
@@ -21,6 +21,8 @@ jobs:
           echo "${{ secrets.KEY  }}" >> private_key.pem && chmod 600 private_key.pem
           ssh -o StrictHostKeyChecking=no -i "private_key.pem" "${{ secrets.IP_SSH  }}" '       
             lsof -ti tcp:3000 | xargs kill
+            eval $(ssh-agent -s)
+            ssh-add ~/.ssh/my_project_deploy_key
             cd /home/ubuntu && 
             cd frontend-wealth-managment/ &&
             git pull &&
