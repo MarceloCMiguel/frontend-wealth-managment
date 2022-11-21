@@ -25,8 +25,7 @@ jobs:
             ssh-add ~/.ssh/my_project_deploy_key
             cd /home/ubuntu && 
             cd frontend-wealth-managment/ &&
-            git pull &&
-            (npm run start&)
+            git pull 
 
           '
 
