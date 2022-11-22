@@ -27,6 +27,6 @@ jobs:
             cd frontend-wealth-managment/
             git pull
             npm install
-            echo | (npm start &)
+            echo | (npm start )
           '
 
