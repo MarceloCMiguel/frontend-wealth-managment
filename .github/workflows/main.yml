@@ -26,6 +26,7 @@ jobs:
             cd /home/ubuntu
             cd frontend-wealth-managment/
             git pull
-            sudo ./script.bash
+            npm install
+            echo | nohup npm start & 
           '
 
