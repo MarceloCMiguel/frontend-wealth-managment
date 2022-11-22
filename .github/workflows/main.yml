@@ -27,7 +27,8 @@ jobs:
             cd frontend-wealth-managment/
             git pull
             npm install
-            nohup npm start &
+            npm run build
+            nohup serve -s build -l 3000 &
             exit
 
           '
