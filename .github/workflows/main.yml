@@ -20,13 +20,13 @@ jobs:
         run: |
           echo "${{ secrets.KEY  }}" >> private_key.pem && chmod 600 private_key.pem
           ssh -o StrictHostKeyChecking=no -i "private_key.pem" "${{ secrets.IP_SSH  }}" '
-            eval $(ssh-agent -s) &&
-            ssh-add ~/.ssh/my_project_deploy_key &&
-            cd /home/ubuntu &&
-            cd frontend-wealth-managment/   &&
-            git pull &&
-            npm install &&
-            npm run build &&
+            eval $(ssh-agent -s) 
+            ssh-add ~/.ssh/my_project_deploy_key 
+            cd /home/ubuntu 
+            cd frontend-wealth-managment/
+            git pull 
+            npm install
+            npm run build
             sudo reboot
           '
 
