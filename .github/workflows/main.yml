@@ -27,6 +27,8 @@ jobs:
             cd frontend-wealth-managment/
             git pull
             npm install
-            echo | (npm start )
+            npm run build
+            serve -s build & exit
+
           '
 
