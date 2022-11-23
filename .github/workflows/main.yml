@@ -19,8 +19,7 @@ jobs:
       - name: Deploy na EC2
         run: |
           echo "${{ secrets.KEY  }}" >> private_key.pem && chmod 600 private_key.pem
-          ssh -o StrictHostKeyChecking=no -i "private_key.pem" "${{ secrets.IP_SSH  }}" '       
-            lsof -ti tcp:3000 | xargs kill &&
+          ssh -o StrictHostKeyChecking=no -i "private_key.pem" "${{ secrets.IP_SSH  }}" '
             eval $(ssh-agent -s) &&
             ssh-add ~/.ssh/my_project_deploy_key &&
             cd /home/ubuntu &&

@@ -17,7 +17,7 @@ export default function Signup(){
         <Flex direction="column" align="center" justify="start" padding={10}>
             <Image src={logo} alt="logo" />
 
-            <Heading fontSize={title_size}>Ferramenta de análise quantitativa para o gerenciamento sistemático de patrimônio.</Heading>
+            <Heading fontSize={title_size}>Ferramentaa de análise quantitativa para o gerenciamento sistemático de patrimônio.</Heading>
             <Text fontSize={subtitle_size} color={subtitle_color}>Uma ferramenta que gera uma carteira de investimento totalmente focada em você, investidor</Text>
             
             <Box margin={10}>
