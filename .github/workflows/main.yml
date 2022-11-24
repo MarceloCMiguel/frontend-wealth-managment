@@ -24,10 +24,7 @@ jobs:
             ssh-add ~/.ssh/my_project_deploy_key 
             cd /home/ubuntu 
             cd frontend-wealth-managment/
-            git reset --hard &&
             git checkout main &&
-            git fetch --all &&
-            git reset --hard &&
             git pull origin main &&
             sudo docker-compose -f docker-compose.yml up --build -d
           '
