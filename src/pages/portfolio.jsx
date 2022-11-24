@@ -15,24 +15,15 @@ import api from '../api/api';
 import { useRef } from 'react';
 import { useLocation } from "react-router-dom";
 import { Chart } from "react-google-charts";
-// import { Pie } from 'react-chartjs-2';
-// import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 var randomColor = require('randomcolor'); // import the script
-// ChartJS.register(ArcElement, Tooltip, Legend);
 
 export default function Portfolio(props) {
 
 
-
     const navigate = useNavigate();
     const location = useLocation();
-    const [ativos, setAtivos] = useState({
-        'PETR4': 25,
-        'VALE3': 25,
-        'ITUB4': 25,
-        'BBDC4': 25,
-
-    });
+    const portfolio = location.state.portfolio;
+    const [ativos, setAtivos] = useState(portfolio);
 
     const [isLoading, setIsLoading] = useState(true);
 
@@ -42,43 +33,20 @@ export default function Portfolio(props) {
     const isFirstRender = useRef(true);
 
     useEffect(() => {
-        if (isFirstRender.current) {
-            isFirstRender.current = false;
-
+        
             // 👇️ scroll to top on page load
             window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-
-            // // set a list with the keys of the ativos object to setLabels
-            // var labels = Object.keys(ativos);
-            // // add labels to key labels in data
-            // // setData({ ...data, labels: labels });
-
-            // // set a list with the values of the ativos object
-            // // setData[0].data = Object.values(ativos);
-            // var values = Object.values(ativos);
-            // console.log(values);
-
-            // // add values to key dataset in data
-            // // setData({ ...data, dataset: [{ ...data.dataset[0], data: values }] });
-            // // for each Object.values(ativos) create a random color
-
-            // var colors = Object.values(ativos).map(() => randomColor());
-            // // add colors to key backgroundColor in dataset
-            // setData({ ...data, labels: labels, dataset: [{ ...data.dataset[0], backgroundColor: colors, data: values }] });
-            // append a list with the keys and values of the ativos object to ativosPosProcessamento
-            // setAtivosPosProcessamento(...ativosPosProcessamento, ativos.map((key, value) => [key, value]));
-
-            // for each key value pair in ativos, append a list with the key and value to ativosPosProcessamento
             var ativosPesos = [];
-            Object.entries(ativos).forEach(([key, value]) => {
-                ativosPesos.push([key, value]);
-            });
+            var size_each_ativo = 100 / ativos.length;
+            for (var i = 0; i < ativos.length; i++) {
+                ativosPesos.push([ativos[i], size_each_ativo]);
+            }
+
             // append ativosPesos to ativosPosProcessamento
             setAtivosPosProcessamento([...ativosPosProcessamento, ...ativosPesos]);
-            
             return;
-        }
-        setIsLoading(false);
+        
+        
         // console.log(data);
     }, []);
 
