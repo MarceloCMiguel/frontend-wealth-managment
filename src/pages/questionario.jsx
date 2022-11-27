@@ -1,7 +1,7 @@
 import { Stack, Flex, Box, Button, Text, Center, Heading } from '@chakra-ui/react'
 import { Image } from '@chakra-ui/react'
 import logo from '../images/dao.png';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { RadioGroup, Radio, Stack as Stack2 } from "@chakra-ui/react"
 import AversaoRisco from './aversao_risco';
 import AversaoPerda from './aversao_perda';
@@ -11,8 +11,8 @@ import React, { useState, useEffect,useRef } from 'react';
 import SLR from './slr';
 import StatusPage from './status';
 export default function Questionario(){
-    
-
+    const location = useLocation();
+    console.log(location.state.name);
     const [values, setValues] = useState({
         step: 1,
         aversaoRisco: -1,
@@ -20,6 +20,8 @@ export default function Questionario(){
         reflexao: -1,
         total_assets: -1,
         liabilities: -1,
+        name: location.state.name,
+        email: location.state.email,
     });
     const isFirstRender = useRef(true)
 

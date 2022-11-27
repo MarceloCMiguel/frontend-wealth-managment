@@ -59,6 +59,15 @@ export default function AversaoRisco(props) {
     else if (q1 == '2' && q2 == '2' && q3 == '2' && q4 == '2' && q5 == '2') {
       props.handleChange(1.5);
     }
+    else{
+      toast({
+        title: "Ops",
+        description: "Houve uma inconsistência nos dados, por favor, tente novamente",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        });
+    }
   };
   return (
     // add a Flex tag with a direction of column, centered in axis y

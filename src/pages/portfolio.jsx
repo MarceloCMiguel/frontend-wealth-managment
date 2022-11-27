@@ -97,7 +97,7 @@ export default function Portfolio(props) {
       height={"400px"}
     />
 
-    <Button width="100%" colorScheme="blue" variant="solid" size="lg" margin={5} onClick={() => navigate('/questionario')}>Refazer questionário</Button>
+    <Button width="100%" colorScheme="blue" variant="solid" size="lg" margin={5} onClick={() => navigate('/')}>Refazer questionário</Button>
 
 
 

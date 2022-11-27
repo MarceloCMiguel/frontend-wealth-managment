@@ -49,6 +49,15 @@ export default function AversaoPerda(props){
         else if (q1 == '2' && q2 == '2' && q3 == '2' && q4 == '2' ){
           props.handleChange(3);
         }
+        else{
+          toast({
+            title: "Ops",
+            description: "Houve uma inconsistência nos dados, por favor, tente novamente",
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+            });
+        }
       };
 
     return(
