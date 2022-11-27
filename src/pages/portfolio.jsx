@@ -13,17 +13,38 @@ import { title_color } from '../styles/pallete_color';
 import { useEffect } from 'react';
 import api from '../api/api';
 import { useRef } from 'react';
-import { useLocation } from "react-router-dom";
+import { useLocation,useParams } from "react-router-dom";
 import { Chart } from "react-google-charts";
 var randomColor = require('randomcolor'); // import the script
 
 export default function Portfolio(props) {
 
+    const params = useParams();
+
+    const portfolio_id = params.id;
 
     const navigate = useNavigate();
-    const location = useLocation();
-    const portfolio = location.state.portfolio;
-    const [ativos, setAtivos] = useState(portfolio);
+    
+    useEffect(() => {
+        if(portfolio_id != undefined && ativos.length == 0){
+            api.get('/status/', {
+                params: {
+                    id: portfolio_id,
+                }
+            },).then((response) => {
+                console.log(response.data);
+                if( response.status == 200){
+                    if (response.data.status == "finished"){
+                setAtivos(response.data.portfolio);
+                    }
+                }
+            }).catch((error) => {
+                console.log(error);
+            });
+        }
+    }, [])
+
+    const [ativos, setAtivos] = useState([]);
 
     const [isLoading, setIsLoading] = useState(true);
 
@@ -36,6 +57,8 @@ export default function Portfolio(props) {
         
             // 👇️ scroll to top on page load
             window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+        
+            if(ativos.length > 0 && ativosPosProcessamento.length == 1){
             var ativosPesos = [];
             var size_each_ativo = 100 / ativos.length;
             for (var i = 0; i < ativos.length; i++) {
@@ -45,22 +68,14 @@ export default function Portfolio(props) {
             // append ativosPesos to ativosPosProcessamento
             setAtivosPosProcessamento([...ativosPosProcessamento, ...ativosPesos]);
             return;
+            }
         
-        
-        // console.log(data);
-    }, []);
+    }, [ativos]);
 
 
-    const dataOptions = [
-        ["Portfolio", "%"],
-        ["Work", 11],
-        ["Eat", 2],
-        ["Commute", 2],
-        ["Watch TV", 2],
-        ["Sleep", 7],
-      ];
+    
       
-       const options = {
+    const options = {
 
         // make legend on bottom
         legend: { position: "top",maxLines: 5 },
@@ -82,6 +97,7 @@ export default function Portfolio(props) {
       height={"400px"}
     />
 
+    <Button width="100%" colorScheme="blue" variant="solid" size="lg" margin={5} onClick={() => navigate('/questionario')}>Refazer questionário</Button>
 
 
 

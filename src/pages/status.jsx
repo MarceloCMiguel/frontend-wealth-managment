@@ -61,7 +61,7 @@ export default function StatusPage(props) {
                     if (response.data.status == "finished"){
                         var portfolio = response.data.portfolio;
                         clearInterval(interval);
-                        navigate("/portfolio", { state: { id: id, portfolio: portfolio} });
+                        navigate('/portfolio/'+id);
                     }
                 }
             }).catch((error) => {
