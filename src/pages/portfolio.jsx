@@ -7,7 +7,9 @@ import {
   Center,
   Heading,
   Input,
+  StackDivider,
 } from "@chakra-ui/react";
+import { Card, CardHeader, CardBody, CardFooter } from "@chakra-ui/react";
 import { Image } from "@chakra-ui/react";
 import logo from "../images/dao.png";
 import { useNavigate } from "react-router-dom";
@@ -104,13 +106,14 @@ export default function Portfolio(props) {
   useEffect(() => {
     if (portfolio_id != undefined && portfolioAttribute == null) {
       api
-        .get("/attributes/user", {
+        .get("/atributes/user/", {
           params: {
             id: portfolio_id,
           },
         })
         .then((response) => {
           if (response.status == 200) {
+            console.log(response.data);
             setPortfolioAttribute(response.data);
           }
         })
@@ -153,12 +156,18 @@ export default function Portfolio(props) {
   };
 
   const LineChartOptions = {
+    legend: { position: "top", maxLines: 5 },
     hAxis: {
-      title: "Time",
+      title: "Data",
     },
     vAxis: {
       title: "Evolução Patrimonial (%)",
     },
+  };
+
+  const formatNumber = (number) => {
+    // round and show 2 decimals
+    return (Math.round(number * 100) / 100).toFixed(2);
   };
 
   return (
@@ -182,10 +191,15 @@ export default function Portfolio(props) {
           height={"400px"}
         />
       )}
+      <Box margin={2} />
+
+      <Heading fontSize={title_size} color={blue_color}>
+        Evolução patrimonial
+      </Heading>
 
       {graphData != null ? (
         <Chart
-          width={"700px"}
+          width={"98vw"}
           height={"410px"}
           chartType="LineChart"
           loader={<div>Loading Chart</div>}
@@ -194,7 +208,81 @@ export default function Portfolio(props) {
           rootProps={{ "data-testid": "2" }}
         />
       ) : (
-        <div> Carregando gráfico</div>
+        <div> Carregando evolução patrimonial</div>
+      )}
+      <Box margin={5} />
+      <Heading fontSize={title_size} color={blue_color}>
+        Atributos
+      </Heading>
+      {portfolioAttribute != null ? (
+        <Card>
+          <CardHeader>
+            <Heading size="md">Características do Portfólio</Heading>
+          </CardHeader>
+
+          <CardBody>
+            <Stack divider={<StackDivider />} spacing="4">
+              <Box>
+                <Heading size="xs" textTransform="uppercase">
+                  Retorno (%)
+                </Heading>
+                <Text pt="2" fontSize="sm" color={blue_color}>
+                  {formatNumber(portfolioAttribute["retorno"])}%
+                </Text>
+              </Box>
+              <Box>
+                <Heading size="xs" textTransform="uppercase">
+                  Volatilidade (%)
+                </Heading>
+                <Text pt="2" fontSize="sm" color={blue_color}>
+                  {formatNumber(portfolioAttribute["volatilidade"])}%
+                </Text>
+              </Box>
+              <Box>
+                <Heading size="xs" textTransform="uppercase">
+                  Skewness (por ativo)
+                </Heading>
+                <Text pt="2" fontSize="sm">
+                  {Object.entries(portfolioAttribute["skew"]).map(
+                    ([key, value]) => (
+                      <Text color={blue_color}>
+                        {key}: {formatNumber(value)}
+                      </Text>
+                    )
+                  )}
+                </Text>
+              </Box>
+
+              <Box>
+                <Heading size="xs" textTransform="uppercase">
+                  Kurtosis (por ativo)
+                </Heading>
+                <Text pt="2" fontSize="sm">
+                  {Object.entries(portfolioAttribute["kurtosis"]).map(
+                    ([key, value]) => (
+                      <Text color={blue_color}>
+                        {key}: {formatNumber(value)}
+                      </Text>
+                    )
+                  )}
+                </Text>
+              </Box>
+            </Stack>
+          </CardBody>
+        </Card>
+      ) : (
+        // <div>
+        //   <p>Retorno médio anual: {portfolioAttribute["retorno"]}%</p>
+        //   <p>Volatilidade: {portfolioAttribute["volatilidade"]}</p>
+        //   {Object.keys(portfolioAttribute["skew"]).map((key) => {
+        //     return (
+        //       <p>
+        //         {key}: {portfolioAttribute["skew"][key]}
+        //       </p>
+        //     );
+        //   })}
+        // </div>
+        <div> Carregando atributos do portfolio</div>
       )}
 
       <Button
