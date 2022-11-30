@@ -90,7 +90,7 @@ export default function Portfolio(props) {
               var list = [];
               list.push(datas[i]);
               for (let j = 0; j < values.length; j++) {
-                list.push(values[j][i]);
+                list.push(values[j][i] - 100);
               }
               ListData.push(list);
             }
