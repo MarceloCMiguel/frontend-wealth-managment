@@ -113,7 +113,6 @@ export default function Portfolio(props) {
         })
         .then((response) => {
           if (response.status == 200) {
-            console.log(response.data);
             setPortfolioAttribute(response.data);
           }
         })
